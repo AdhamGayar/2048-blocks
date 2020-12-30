@@ -16,7 +16,7 @@ public class AppUI extends JPanel{
     AppUI()
     {
         setBorder(BorderFactory.createEmptyBorder(boardTop, boardLR,boardBottom, boardLR));
-        setBackground(new Color(24, 21, 57));
+        setBackground(new Color(48, 53, 77));
         super.setLayout(new BorderLayout());
         setMainPanel();
         try {
@@ -29,16 +29,22 @@ public class AppUI extends JPanel{
     private void setMainPanel()
     {
         int z=y*8;
-        JButton btn1 = new JButton();
+        JButton btn1 = new JButton("     ");
         add(createButton(btn1,x , z));
-        JButton btn2 = new JButton();
+        JButton btn2 = new JButton("     ");
         add(createButton(btn2,x *2, z));
-        JButton btn3 = new JButton();
+        JButton btn3 = new JButton("     ");
         add(createButton(btn3,x *3, z));
-        JButton btn4 = new JButton();
+        JButton btn4 = new JButton("     ");
         add(createButton(btn4,x *4, z));
-        JButton btn5 = new JButton();
+        JButton btn5 = new JButton("     ");
         add(createButton(btn5,x *5, z));
+
+        JButton newGamebtn = new JButton("New Game");
+        add(createButton(newGamebtn,x , z+y));
+        newGamebtn.setBounds((x - 10) - blockSide,(z+y-boardBottom) - blockSide,3*blockSide,blockSide+5);
+        newGamebtn.setBackground(new Color(235, 64, 77));
+
         scoreLabel.setLayout(null);
         scoreLabel.setBounds(boardLR*2-80,boardTop-boardBottom-15,2*blockSide,blockSide+10);
         scoreLabel.setFont(new Font("SansSerif",Font.BOLD,18));
@@ -68,9 +74,18 @@ public class AppUI extends JPanel{
             pushBlock(5);
             repaint();
         });
+        newGamebtn.addActionListener(actionEvent -> {
 
+            int n = JOptionPane.showConfirmDialog(null, "Are you sure you want to start a New Game?",
+                    "WARNING", JOptionPane.YES_NO_OPTION);
+            if(n<=0) {
+                game.zeroBoard();
+                score = 0;
+                repaint();
+            }
+
+        });
     }
-
     private void pushBlock(int choice)
     {
         if (game.isBoardFull(ran)) {
@@ -88,7 +103,6 @@ public class AppUI extends JPanel{
         }
     }
     private JButton createButton(JButton button,int x, int y) {
-        button.setText("     ");
         button.setFocusPainted(false);
         button.setLayout(null);
         button.setBounds((x - 10) - blockSide,(y-boardBottom) - blockSide,2*blockSide,blockSide+10);
@@ -143,7 +157,7 @@ public class AppUI extends JPanel{
     }
     private void DrawBlock(Graphics2D graphics2D ,int value, int x , int y)
     {
-        graphics2D.setColor(new Color(43, 108, 140));
+        graphics2D.setColor(new Color(35, 80, 126));
         graphics2D.fillRoundRect((x - 10) - blockSide,(y-boardBottom) - blockSide,2*blockSide,2*blockSide,17,17);
         graphics2D.setColor(Color.lightGray);
 

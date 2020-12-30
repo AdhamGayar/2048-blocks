@@ -22,8 +22,13 @@ public class Board {
     public int randomize()  // Generate random value with boundaries and constraints
     {
         int[] randomBlocks = new int[6];
-        if(getMaxValue()>=Math.pow(2,powerCounter+7))
-        {powerCounter++;}
+        int val=powerCounter+5;
+        if(getMaxValue()>=Math.pow(2,val+7))
+        {
+            powerCounter++;
+            blockRemover();
+            zeroRemover();
+        }
         for (int i = 0; i < 6; i++) {
             randomBlocks[i] = (int) Math.pow(2,powerCounter);
             powerCounter++;
@@ -129,6 +134,7 @@ public class Board {
     }
     private void zeroRemover() // zero above value checker and remover
     {
+
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 5 ; j++) {
                 if (i - 1 >= 0 && board[i - 1][j] == 0 && board[i][j] != 0) {
@@ -137,6 +143,18 @@ public class Board {
                 }
             }
         }
+    }
+    private void blockRemover()
+    {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 5; j++) {
+                if(board[i][j]<Math.pow(2,powerCounter))
+                {
+                    board[i][j]=0;
+                }
+            }
+        }
+
     }
     public void fullChecker(int x) //double checker if needed
     {
