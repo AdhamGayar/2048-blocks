@@ -1,7 +1,9 @@
 public class Board {
 
     private int[][] board = new int[8][5];
+    private int[][] checkingBoard = new int[8][5];
     private int[][] previousBoard = new int[8][5];
+    int previousNum =0;
     private int powerCounter = 1;
     Board() // constructor zero-ing the Board
     {
@@ -42,6 +44,13 @@ public class Board {
         return rand;
     }
     public void push(int rand, int x) { //takes input and push it to the board
+
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 5; j++) {
+                previousBoard[i][j]=board[i][j];
+            }
+        }
+        previousNum = rand;
         for (int i = 0; i < 8; i++) {
             if (board[i][x - 1] == 0) {
                 board[i][x - 1] = rand;
@@ -154,29 +163,29 @@ public class Board {
                 }
             }
         }
-
     }
     public void fullChecker(int x) //double checker if needed
     {
+
         currentColumnSimilarityChecker(x);
         zeroRemover();
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 5; j++) {
-                previousBoard[i][j]=board[i][j];
+                checkingBoard[i][j]=board[i][j];
             }
         }
         similarityChecker();
         zeroRemover();
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 5; j++) {
-                    if(previousBoard[i][j]!=board[i][j])
+                    if(checkingBoard[i][j]!=board[i][j])
                     {
                         fullChecker(x);
+                        break;
                     }
                     else {}
                 }
             }
-
     }
     public int getMaxValue()  // return maximum value in the board
     {
@@ -196,6 +205,14 @@ public class Board {
                 System.out.print(board[i][j] + "\t\t");
             }
             System.out.println();
+        }
+    }
+    public void undo()
+    {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 5; j++) {
+                board[i][j]= previousBoard[i][j];
+            }
         }
     }
 }
